@@ -2,9 +2,15 @@ import os
 import time
 from flask import Flask, request, jsonify
 import pika
-from db import init_db, SessionLocal
-from metrics import metrics
-
+try:
+    from db import init_db, SessionLocal
+except ImportError:
+    from server.db import init_db, SessionLocal
+try:
+    from metrics import metrics
+except ImportError:
+    from server.metrics import metrics
+ 
 from sqlalchemy import text
 
 # Инициализируем БД при старте
