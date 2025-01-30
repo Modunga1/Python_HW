@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: my_project_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: orders_db
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d orders_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: my_project_rabbit
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"  # UI для RabbitMQ
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmqctl status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile 
+    container_name: my_project_server
+    depends_on:
+      rabbitmq:
+        condition: service_healthy  # Убедиться, что RabbitMQ готов
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/orders_db
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      PYTHONPATH: /app
+
+  consumer:
+    build:
+      context: ./consumer
+      dockerfile: Dockerfile 
+    container_name: my_project_consumer
+    depends_on:
+      rabbitmq:
+        condition: service_healthy  # Убедиться, что RabbitMQ готов
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/orders_db
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      PYTHONPATH: /app
+  prometheus:
+    image: prom/prometheus
+    container_name: my_project_prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana
+    container_name: my_project_grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus   
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  
+      - grafana-storage:/var/lib/grafana
+
+volumes:
+  grafana-storage:
+
