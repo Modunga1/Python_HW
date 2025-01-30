@@ -14,32 +14,32 @@
 
 ### Структура проекта
 
-/project-root
-│
-├── server/ # Код сервера Flask
-│ ├── main.py # Основной файл приложения
-│ ├── db.py # Файл базы данных
-│ ├── metrics.py # Файл для сбора метрик
-│ └── requirements.txt # Зависимости для сервера
-│
-├── consumer/ # Код консюмера
-│ ├── consumer.py # Основной файл консюмера
-│ └── requirements.txt # Зависимости для консюмера
-│
-├── prometheus/ # Конфигурация Prometheus
-│ └── prometheus.yml # Файл конфигурации Prometheus
-│
-├── docker-compose.yml # Файл для сборки всех сервисов с помощью Docker
-│
-├── tests/ # Тесты для сервера и консюмера
-│ ├── test_server.py # Тесты для сервера Flask
-│ └── test_consumer.py # Тесты для консюмера
-│
+/project-root<br/>
+│<br/>
+├── server/ # Код сервера Flask<br/>
+│ ├── main.py # Основной файл приложения<br/>
+│ ├── db.py # Файл базы данных<br/>
+│ ├── metrics.py # Файл для сбора метрик<br/>
+│ └── requirements.txt # Зависимости для сервера<br/>
+│<br/>
+├── consumer/ # Код консюмера<br/>
+│ ├── consumer.py # Основной файл консюмера<br/>
+│ └── requirements.txt # Зависимости для консюмера<br/>
+│<br/>
+├── prometheus/ # Конфигурация Prometheus<br/>
+│ └── prometheus.yml # Файл конфигурации Prometheus<br/>
+│<br/>
+├── docker-compose.yml # Файл для сборки всех сервисов с помощью Docker<br/>
+│<br/>
+├── tests/ # Тесты для сервера и консюмера<br/>
+│ ├── test_server.py # Тесты для сервера Flask<br/>
+│ └── test_consumer.py # Тесты для консюмера<br/>
+│<br/>
 └── README.md # Этот файл
 
 ## Установка и запуск
 
-1. **Клонируйте репозиторий**:
+1. **Клонируйте репозиторий**:<br/>
   git clone https://github.com/Modunga1/Python_HW.git <br/>
   cd Python_HW
 
