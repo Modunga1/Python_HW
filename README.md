@@ -40,7 +40,7 @@
 ## Установка и запуск
 
 1. **Клонируйте репозиторий**:
-  git clone https://github.com/Modunga1/Python_HW.git
+  git clone https://github.com/Modunga1/Python_HW.git <br/>
   cd Python_HW
 
 3. **Запустите приложение**:
